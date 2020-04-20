@@ -22,20 +22,13 @@ class RecipeBook extends React.Component {
 		this.state={
 			order: "alphabetical"
 		}
+		this.handleClick = this.handleClick.bind(this);
 	}
 
-	componentDidMount(){
-		this.timer = setTimeout(() => {this.tick()}, 5000);
-	}
-
-	componentWillUnmount(){
-		clearTimeout(this.timer);
-	}
-
-	tick(){
-		this.setState({
-			order: "rating"
-		});
+	handleClick(){
+		this.setState(state => ({
+			order: state.order === "alphabetical" ? "rating" : "alphabetical"
+		}));
 	}
 
 	render(){
@@ -97,6 +90,10 @@ class RecipeBook extends React.Component {
 
 		return(
 			<section className="container">
+				<div className="d-flex justify-content-between align-items-center my-3">
+					<span>Current order: {this.state.order}</span>
+					<button className="btn btn-primary ml-3" onClick={this.handleClick}>Change Order</button>
+				</div>
 				<div className="row row-cols-1 row-cols-md-3">
 					{recipes.map((recipe, i) => (
 						<RecipeCard key={i} title={recipe.title} description={recipe.description} rating={recipe.rating+"/5"} />
