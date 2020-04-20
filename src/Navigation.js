@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
+import {NavLink} from 'react-router-dom';
 
 function Navigation(props){
 	return(
@@ -10,8 +11,8 @@ function Navigation(props){
 						<img src={logo} width="35" height="35" alt="Logo" />
 					</div>
 					<div className="navbar-nav mr-auto">
-						<a href="/" className="nav-item nav-link mr-5 text-primary">Recipe Book</a>
-						<a href="/add" className="nav-item nav-link mr-5 text-primary">Add Recipe</a>
+						<NavLink to="/" activeClassName="active" exact={true} className="nav-item nav-link mr-5">Recipe Book</NavLink>
+						<NavLink to="/add" activeClassName="active" className="nav-item nav-link mr-5">Add Recipe</NavLink>
 					</div>
 					<button className="btn btn-sm btn-outline-primary ml-2" type="button">Log Out</button>
 				</div>
