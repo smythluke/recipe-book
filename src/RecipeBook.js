@@ -17,6 +17,23 @@ function RecipeCard(props){
 }
 
 class RecipeBook extends React.Component {
+	constructor(props){
+		super(props);
+		this.state={
+			order: "alphabetical"
+		}
+	}
+
+	componentDidMount(){
+		this.timer = setTimeout(() => {this.tick()}, 5000);
+	}
+
+	tick(){
+		this.setState({
+			order: "rating"
+		});
+	}
+
 	render(){
 		let recipes = [
 			{
@@ -45,7 +62,35 @@ class RecipeBook extends React.Component {
 				rating: 5
 			}
 		];
+
+		if (this.state.order === "alphabetical"){
+			recipes.sort(function(a, b){
+				if (a.title[0] < b.title[0]){
+					return -1;
+				}
 		
+				if (a.title[0] > b.title[0]){
+					return 1;
+				}
+		
+				return 0;
+			});
+		}
+
+		if (this.state.order === "rating"){
+			recipes.sort(function(a, b){
+				if (a.rating > b.rating){
+					return -1;
+				}
+		
+				if (a.rating < b.rating){
+					return 1;
+				}
+		
+				return 0;
+			});
+		}
+
 		return(
 			<section className="container">
 				<div className="row row-cols-1 row-cols-md-3">
