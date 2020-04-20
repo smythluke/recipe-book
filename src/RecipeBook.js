@@ -28,6 +28,10 @@ class RecipeBook extends React.Component {
 		this.timer = setTimeout(() => {this.tick()}, 5000);
 	}
 
+	componentWillUnmount(){
+		clearTimeout(this.timer);
+	}
+
 	tick(){
 		this.setState({
 			order: "rating"
