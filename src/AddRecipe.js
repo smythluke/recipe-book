@@ -1,4 +1,7 @@
 import React from 'react';
+import { API, graphqlOperation } from 'aws-amplify';
+import { createRecipe } from './graphql/mutations';
+import { v4 as uuidv4 } from 'uuid';
 
 class AddRecipe extends React.Component {
 	constructor(props){
@@ -24,12 +27,22 @@ class AddRecipe extends React.Component {
 	}
 
 	handleSubmit(){
-		alert(this.state.newTitle + "\n" + this.state.newDescription + "\n" + this.state.newRating + "\n" + this.state.newLink);
-		this.setState({
-			newTitle: "",
-			newDescription: "",
-			newRating: "1",
-			newLink:""
+		const recipeDetails = {
+			id: uuidv4(),
+			title: this.state.newTitle,
+			description: this.state.newDescription,
+			rating: this.state.newRating,
+			link: this.state.newLink
+		}
+		API.graphql(graphqlOperation(createRecipe, {input: recipeDetails})).then(event => {
+			this.setState({
+				newTitle: "",
+				newDescription: "",
+				newRating: "1",
+				newLink:""
+			});
+		}).catch(error => {
+			console.log(error);
 		});
 	}
 
