@@ -1,1 +1,9 @@
-{}
+{
+	"auth": {
+		"recipebook87bf8fa1": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	}
+}
