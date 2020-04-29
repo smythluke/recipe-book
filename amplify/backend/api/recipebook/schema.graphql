@@ -1,0 +1,8 @@
+type Recipe @model @auth(rules: [{allow: owner}]){
+  id: ID!
+  title: String
+  description: String
+  rating: Int
+  link: String
+  owner: String
+}
