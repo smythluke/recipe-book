@@ -1,6 +1,7 @@
 import React from 'react';
-import { API, graphqlOperation } from 'aws-amplify';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { listRecipes } from './graphql/queries';
+import { onCreateRecipe } from './graphql/subscriptions';
 
 function RecipeCard(props){
 	return(
@@ -30,7 +31,7 @@ class RecipeBook extends React.Component {
 		this.handleClick = this.handleClick.bind(this);
 	}
 
-	componentDidMount(){
+	async componentDidMount(){
 		API.graphql(graphqlOperation(listRecipes)).then(res => {
 			this.setState({
 				recipes: res.data.listRecipes.items
@@ -38,6 +39,18 @@ class RecipeBook extends React.Component {
 		}).catch(error => {
 			console.log(error);
 		});
+
+		this.createRecipeSubscription = API.graphql(graphqlOperation(onCreateRecipe, {owner: (await Auth.currentUserInfo()).username})).subscribe({
+			next: (createRecipe) => {
+				this.setState((state) => ({
+					recipes: state.recipes.concat(createRecipe.value.data.onCreateRecipe)
+				}));
+			}
+		});
+	}
+
+	componentWillUnmount(){
+		this.createRecipeSubscription.unsubscribe();
 	}
 
 	handleClick(){
